@@ -13,7 +13,8 @@ motionx1 = "STOP"
 motionx2 = "STOP"
 motiony1 = "STOP"
 motiony2 = "STOP"
-object = [0.1 * w, 0.4 * h, 0.1 * w, 0.4 * h]
+object = [0.1 * w, 0.6 * h, 0.1 * w, 0.2 * h]
+k = 0.8
 while running:
     screen.fill("black")
     for event in pygame.event.get():
@@ -36,7 +37,7 @@ while running:
             if event.key == pygame.K_s:
                 motiony2 = "STOP"
         if event.type == FALL:
-            if circle_xy[1] < 0.8 * h - 20:
+            if circle_xy[1] < k * h - 20:
                 circle_xy[1] += 1
     if motionx1 == "LEFT":
         circle_xy[0] += 5
@@ -44,9 +45,13 @@ while running:
         circle_xy[0] -= 5
     if x > 0:
         circle_xy[1] -= 10
-        x -= 0.5
+        x -= 0.25
     if motiony2 == "DOWN":
         circle_xy[1] += 5
+    if object[0] < circle_xy[0] < object[0] + object[2]:
+        k = object[1] / h
+    else:
+        k = 0.8
     if circle_xy[0] < 0.3 * w:
         circle_xy[0] += 5
         object[0] += 5
@@ -62,7 +67,7 @@ while running:
     pygame.draw.rect(screen, "white", (0, 0.8 * h, w, 0.2 * h))
     pygame.draw.rect(screen, "white", object)
     pygame.draw.circle(screen, "red", circle_xy, 20)
-    pygame.draw.rect(screen, "green", (0.3 * w, 0.3 * h, 0.4 * w, 0.6 * h), 2)
+    # pygame.draw.rect(screen, "green", (0.3 * w, 0.3 * h, 0.4 * w, 0.6 * h), 2)
     clock.tick(120)
     pygame.display.flip()
 pygame.quit()
